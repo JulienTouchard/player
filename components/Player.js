@@ -1,13 +1,14 @@
-import { Component } from "react";
-import { View, Image, StyleSheet } from "react-native";
-import { playlist } from "../playlist";
-import NavBtn from "./NavBtn";
-//import { Sound } from "react-native-sound"
+/* eslint-disable prettier/prettier */
+import React,{ Component } from 'react';
+import { View, Image, StyleSheet } from 'react-native';
+import { playlist } from '../playlist';
+import NavBtn from './NavBtn';
+import  Sound  from 'react-native-sound';
 
 
 class Player extends Component {
     constructor(props) {
-        super(props)
+        super(props);
     }
 
     state = {
@@ -16,8 +17,8 @@ class Player extends Component {
     }
     mp3 = this.initSound();
     initSound() {
-        const sound = new Audio(this.state.playlist[this.state.currentTrack].mp3);
-        /* Sound.setCategory('Playback');
+        //const sound = new Audio(this.state.playlist[this.state.currentTrack].mp3);
+        Sound.setCategory('Playback');
         const sound = new Sound(this.state.playlist[this.state.currentTrack].mp3, Sound.MAIN_BUNDLE, (error) => {
             if (error) {
                 console.log('failed to load the sound', error);
@@ -25,26 +26,26 @@ class Player extends Component {
             }
             // loaded successfully
             console.log('duration in seconds: ' + sound.getDuration() + 'number of channels: ' + sound.getNumberOfChannels());
-        }); */
+        });
         return sound;
     }
     playMp3() {
         console.log("playMP3")
         console.dir(this.mp3)
         // Play the sound with an onEnd callback
-        /* this.mp3.play((success) => {
+        this.mp3.play((success) => {
             if (success) {
                 console.log('successfully finished playing');
             } else {
                 console.log('playback failed due to audio decoding errors');
             }
-        }); */
+        });
 
-        if (this.mp3.paused) {
+        /* if (this.mp3.paused) {
             this.play();
         } else {
             this.pause();
-        }
+        } */
     }
     play() {
         this.mp3.play();

@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+import React from 'react';
 import { Image, StyleSheet, TouchableHighlight } from "react-native";
 
 const NavBtn = (props) => {
