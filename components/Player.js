@@ -47,12 +47,12 @@ class Player extends Component {
             this.pause();
         } */
     }
-    play() {
+    /* play() {
         this.mp3.play();
     }
     pause() {
         this.mp3.pause();
-    }
+    } */
     prev(){
         this.mp3.pause();
         this.setState({currentTrack:this.state.currentTrack-1});
