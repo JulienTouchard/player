@@ -4,6 +4,7 @@ import { View, Image, StyleSheet, Text } from 'react-native';
 import { playlist } from '../playlist';
 import NavBtn from './NavBtn';
 import Sound from 'react-native-sound';
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 
 
 class Player extends Component {
@@ -15,6 +16,7 @@ class Player extends Component {
         currentTrack: 0,
         playlist: playlist,
         playPause: false,
+        gestureName: 'none',
     }
     mp3 = this.initSound();
     initSound(index = this.state.currentTrack) {
@@ -67,7 +69,7 @@ class Player extends Component {
                     console.log('playback failed due to audio decoding errors');
                 }
             });
-        },100);
+        }, 100);
     }
     next() {
         console.log("next");
@@ -92,14 +94,35 @@ class Player extends Component {
             });
         }, 100);
     }
+    // gestion swipe
+    onSwipeLeft(gestureState) {
+        console.log("next");
+        this.next();
+    }
+
+    onSwipeRight(gestureState) {
+        console.log("prev");
+        this.prev();
+    }
+
+    onSwipe(gestureName, gestureState) {
+        const { SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
+        this.setState({ gestureName: gestureName });
+    }
+
     render() {
         return (
             <View style={{ width: '100%' }}>
-                <Text>{this.state.playlist[this.state.currentTrack].cover}</Text>
-                <Image
-                    source={{ uri: 'asset:/img/cover/' + this.state.playlist[this.state.currentTrack].cover }}
-                    style={styles.slider}
-                />
+                <GestureRecognizer
+                    onSwipe={(direction, state) => this.onSwipe(direction, state)}
+                    onSwipeLeft={(state) => this.onSwipeLeft(state)}
+                    onSwipeRight={(state) => this.onSwipeRight(state)}
+                >
+                    <Image
+                        source={{ uri: 'asset:/img/cover/' + this.state.playlist[this.state.currentTrack].cover }}
+                        style={styles.slider}
+                    />
+                </GestureRecognizer>
                 <View style={styles.navigation}>
                     <NavBtn action={() => { this.prev(); }} icone={"/img/step-backward-solid.png"} />
                     <NavBtn action={() => { this.playMp3(); }} icone={this.state.playPause ? "/img/pause-solid.png" : "/img/play-circle-solid.png"} />
