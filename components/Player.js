@@ -1,10 +1,11 @@
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react';
-import { View, Image, StyleSheet, Text } from 'react-native';
+import { View, Image, StyleSheet, Text, Animated } from 'react-native';
 import { playlist } from '../playlist';
 import NavBtn from './NavBtn';
 import Sound from 'react-native-sound';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
+
 
 
 class Player extends Component {
@@ -17,7 +18,9 @@ class Player extends Component {
         playlist: playlist,
         playPause: false,
         gestureName: 'none',
+        tranxAnim: new Animated.Value(0),
     }
+
     mp3 = this.initSound();
     initSound(index = this.state.currentTrack) {
         console.log("index : " + index);
@@ -72,6 +75,7 @@ class Player extends Component {
         }, 100);
     }
     next() {
+        this.transOut();
         console.log("next");
         this.setState({ playPause: true });
         this.mp3.stop();
@@ -93,6 +97,7 @@ class Player extends Component {
                 }
             });
         }, 100);
+
     }
     // gestion swipe
     onSwipeLeft(gestureState) {
@@ -109,7 +114,13 @@ class Player extends Component {
         const { SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
         this.setState({ gestureName: gestureName });
     }
-
+    transOut = () => {
+        // Will change fadeAnim value to 1 in 5 seconds
+        Animated.timing(this.state.tranxAnim, {
+            toValue: 500,
+            duration: 500
+        }).start();
+    };
     render() {
         return (
             <View style={{ width: '100%' }}>
@@ -118,9 +129,15 @@ class Player extends Component {
                     onSwipeLeft={(state) => this.onSwipeLeft(state)}
                     onSwipeRight={(state) => this.onSwipeRight(state)}
                 >
-                    <Image
+                    <Animated.Image
                         source={{ uri: 'asset:/img/cover/' + this.state.playlist[this.state.currentTrack].cover }}
-                        style={styles.slider}
+                        style={[
+                            styles.slider,
+                            {
+                                // Bind padding to animated value
+                                paddingLeft: this.state.tranxAnim
+                            }
+                        ]}
                     />
                 </GestureRecognizer>
                 <View style={styles.navigation}>
@@ -128,20 +145,35 @@ class Player extends Component {
                     <NavBtn action={() => { this.playMp3(); }} icone={this.state.playPause ? "/img/pause-solid.png" : "/img/play-circle-solid.png"} />
                     <NavBtn action={() => { this.next(); }} icone={'/img/step-forward-solid.png'} />
                 </View>
+                <View style={styles.info}>
+                    <Text>{this.state.playlist[this.state.currentTrack].artist}</Text>
+                    <Text>{this.state.playlist[this.state.currentTrack].title}</Text>
+                    <Text>{this.state.playlist[this.state.currentTrack].annee}</Text>
+                    <Text>{this.state.playlist[this.state.currentTrack].genre}</Text>
+                    <Text>{this.state.playlist[this.state.currentTrack].description}</Text>
+                </View>
             </View>
         );
     }
 }
 const styles = StyleSheet.create({
     navigation: {
-        flex: 1,
+        width: '100%',
+        height: 70,
         flexDirection: 'row',
         justifyContent: 'space-around',
+        marginTop: 10,
+        marginBottom: 5,
+
     },
     slider: {
         width: '100%',
-        height: 300,
+        height: 400,
         backgroundColor: 'skyblue',
     },
+    info: {
+        width: '100%',
+        margin: 5,
+    }
 });
 export default Player;
