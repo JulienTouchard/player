@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import { Image, StyleSheet, TouchableHighlight } from 'react-native';
-import SvgUri from 'react-native-svg-uri';
+
 
 const NavBtn = (props) => {
     console.log(props.icone);
