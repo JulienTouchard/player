@@ -1,7 +1,7 @@
 const playlist = [
     {
         "mp3": "its_bigger_than_hip_hop_dead_prez.mp3",
-        "cover": "https://julien-touchard.com/formations/img/cover/coverDeadPrez.jpg",
+        "cover": "coverDeadPrez.jpg",
         "title": "It's bigger than Hip Hop",
         "artist": "Dead Prez",
         "genre": "Hip Hop",
@@ -10,7 +10,7 @@ const playlist = [
     },
     {
         "mp3": "the_pharcyde_passin_me_by.mp3",
-        "cover": "https://julien-touchard.com/formations/img/cover/coverPharcyde.jpg",
+        "cover": "coverPharcyde.jpg",
         "title": "93 til infinity",
         "artist": "Soul Of Mischief",
         "genre": "Hip Hop",
@@ -19,7 +19,7 @@ const playlist = [
     },
     {
         "mp3": "soul_of_mischief_93_til_infinity.mp3",
-        "cover": "https://julien-touchard.com/formations/img/cover/coverSoulOf.jpg",
+        "cover": "coverSoulOf.jpg",
         "title": "Passin me by",
         "artist": "The Pharcyde",
         "genre": "Hip Hop",

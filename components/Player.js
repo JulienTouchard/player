@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React,{ Component } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, Text } from 'react-native';
 import { playlist } from '../playlist';
 import NavBtn from './NavBtn';
 import  Sound  from 'react-native-sound';
@@ -30,8 +30,8 @@ class Player extends Component {
         return sound;
     }
     playMp3() {
-        console.log("playMP3")
-        console.dir(this.mp3)
+        console.log('playMP3');
+        console.dir(this.mp3);
         // Play the sound with an onEnd callback
         this.mp3.play((success) => {
             if (success) {
@@ -55,16 +55,16 @@ class Player extends Component {
     } */
     prev(){
         this.mp3.pause();
-        this.setState({currentTrack:this.state.currentTrack-1});
+        this.setState({currentTrack:this.state.currentTrack - 1});
         this.mp3 = this.initSound();
-        this.play(); 
+        this.play();
     }
     next(){
         let index;
-        if(this.state.currentTrack === this.state.playlist.length - 1){
+        if (this.state.currentTrack === this.state.playlist.length - 1){
             index = 0;
         } else {
-            index = this.setState.currentTrack +1;
+            index = this.setState.currentTrack + 1;
         }
         this.mp3.pause();
         this.setState({currentTrack:index});
@@ -74,20 +74,19 @@ class Player extends Component {
     render() {
         return (
             <View style={{ width: '100%' }}>
-                <Image source={{
-                    //require(this.state.playlist[this.state.currentTrack].cover)
-                    uri: this.state.playlist[this.state.currentTrack].cover
-                }}
+                <Text>{this.state.playlist[this.state.currentTrack].cover}</Text>
+                <Image 
+                    source={{ uri: 'asset:/img/cover/' + this.state.playlist[this.state.currentTrack].cover }}
                     style={styles.slider}
                 />
                 <View style={styles.navigation}>
-                    <NavBtn action={()=>{this.prev()}} icone={"https://images-ext-1.discordapp.net/external/9F4vUDN1FrkadHp6j5uZS2_JcboV0WcxEhM4d-dmYuM/https/img.icons8.com/ios-glyphs/500/skip-to-start--v1.png"} />
-                    <NavBtn action={() => { this.playMp3() }} icone={"https://images-ext-2.discordapp.net/external/oiYxOTwUG0RKUDkKJKnUDwhZMIl83ZxoXPMTsQ9wzo8/https/img.icons8.com/fluency-systems-filled/500/play.png"} />
-                    <NavBtn action={()=>{this.next()}} icone={"https://images-ext-1.discordapp.net/external/NxBV6i6f7MdvoXwKUB6sgVuR7tFrO81d6dJb6jGCOsc/https/img.icons8.com/ios-glyphs/500/end--v1.png"} />
+                    <NavBtn action={()=>{this.prev();}} icone={"/img/step-backward-solid.png"}/>
+                    <NavBtn action={() => { this.playMp3(); }} icone={"/img/play-circle-solid.png"}/>
+                    <NavBtn action={()=>{this.next();}} icone={'/img/step-forward-solid.png'}/>
                 </View>
 
             </View>
-        )
+        );
     }
 }
 const styles = StyleSheet.create({
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
     slider: {
         width: '100%',
         height: 300,
-        backgroundColor: 'skyblue'
-    }
-})
+        backgroundColor: 'skyblue',
+    },
+});
 export default Player;
