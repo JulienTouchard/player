@@ -1,25 +1,25 @@
 /* eslint-disable prettier/prettier */
-import React,{ Component } from 'react';
+import React, { Component } from 'react';
 import { View, Image, StyleSheet, Text } from 'react-native';
 import { playlist } from '../playlist';
 import NavBtn from './NavBtn';
-import  Sound  from 'react-native-sound';
+import Sound from 'react-native-sound';
 
 
 class Player extends Component {
     constructor(props) {
         super(props);
+        Sound.setCategory('Playback');
     }
-
     state = {
         currentTrack: 0,
         playlist: playlist,
+        playPause: false,
     }
     mp3 = this.initSound();
-    initSound() {
-        //const sound = new Audio(this.state.playlist[this.state.currentTrack].mp3);
-        Sound.setCategory('Playback');
-        const sound = new Sound(this.state.playlist[this.state.currentTrack].mp3, Sound.MAIN_BUNDLE, (error) => {
+    initSound(index = this.state.currentTrack) {
+        console.log("index : " + index);
+        const sound = new Sound(this.state.playlist[index].mp3, Sound.MAIN_BUNDLE, (error) => {
             if (error) {
                 console.log('failed to load the sound', error);
                 return;
@@ -30,61 +30,81 @@ class Player extends Component {
         return sound;
     }
     playMp3() {
-        console.log('playMP3');
-        console.dir(this.mp3);
-        // Play the sound with an onEnd callback
-        this.mp3.play((success) => {
-            if (success) {
-                console.log('successfully finished playing');
-            } else {
-                console.log('playback failed due to audio decoding errors');
-            }
-        });
-
-        /* if (this.mp3.paused) {
-            this.play();
+        let playPauseTmp = !this.state.playPause;
+        this.setState({ playPause: playPauseTmp });
+        if (!this.state.playPause) {
+            // Play the sound with an onEnd callback
+            this.mp3.play((success) => {
+                if (success) {
+                    console.log('successfully finished playing');
+                } else {
+                    console.log('playback failed due to audio decoding errors');
+                }
+            });
         } else {
-            this.pause();
-        } */
+            // Pause
+            this.mp3.pause();
+        }
     }
-    /* play() {
-        this.mp3.play();
-    }
-    pause() {
+    prev() {
+        console.log("prev");
+        this.setState({ playPause: true });
         this.mp3.pause();
-    } */
-    prev(){
-        this.mp3.pause();
-        this.setState({currentTrack:this.state.currentTrack - 1});
-        this.mp3 = this.initSound();
-        this.play();
-    }
-    next(){
         let index;
-        if (this.state.currentTrack === this.state.playlist.length - 1){
+        // j'ai besoin de detecter si this.state.currentTrack - 1 < 0 ???
+        if (this.state.currentTrack - 1 < 0) {
+            index = this.state.playlist.length - 1;
+        } else {
+            index = this.state.currentTrack - 1;
+        }
+        this.setState({ currentTrack: index });
+        this.mp3 = this.initSound(index);
+        setTimeout(() => {
+            this.mp3.play((success) => {
+                if (success) {
+                    console.log('successfully finished playing');
+                } else {
+                    console.log('playback failed due to audio decoding errors');
+                }
+            });
+        },100);
+    }
+    next() {
+        console.log("next");
+        this.setState({ playPause: true });
+        this.mp3.stop();
+        this.mp3.release();
+        let index;
+        if (this.state.currentTrack === this.state.playlist.length - 1) {
             index = 0;
         } else {
-            index = this.setState.currentTrack + 1;
+            index = this.state.currentTrack + 1;
         }
-        this.mp3.pause();
-        this.setState({currentTrack:index});
-        this.mp3 = this.initSound();
-        this.play();
+        this.setState({ currentTrack: index });
+        this.mp3 = this.initSound(index);
+        setTimeout(() => {
+            this.mp3.play((success) => {
+                if (success) {
+                    console.log('successfully finished playing');
+                } else {
+                    console.log('playback failed due to audio decoding errors');
+                }
+            });
+        }, 100);
     }
     render() {
         return (
             <View style={{ width: '100%' }}>
                 <Text>{this.state.playlist[this.state.currentTrack].cover}</Text>
-                <Image 
+                <Image
                     source={{ uri: 'asset:/img/cover/' + this.state.playlist[this.state.currentTrack].cover }}
                     style={styles.slider}
                 />
                 <View style={styles.navigation}>
-                    <NavBtn action={()=>{this.prev();}} icone={"/img/step-backward-solid.png"}/>
-                    <NavBtn action={() => { this.playMp3(); }} icone={"/img/play-circle-solid.png"}/>
-                    <NavBtn action={()=>{this.next();}} icone={'/img/step-forward-solid.png'}/>
+                    <NavBtn action={() => { this.prev(); }} icone={"/img/step-backward-solid.png"} />
+                    <NavBtn action={() => { this.playMp3(); }} icone={this.state.playPause ? "/img/pause-solid.png" : "/img/play-circle-solid.png"} />
+                    <NavBtn action={() => { this.next(); }} icone={'/img/step-forward-solid.png'} />
                 </View>
-
             </View>
         );
     }

@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
     imgIcone: {
         width: 60,
         height: 60,
-        backgroundColor: '#333333',
     }
 })
 
