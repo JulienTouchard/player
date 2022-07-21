@@ -2,7 +2,7 @@
 
 ![](./assets/img/logo.png)
 
-# Best-README-Template
+Best-README-Template
 ====================
 
 An awesome README template to jumpstart your projects!
@@ -13,7 +13,7 @@ View Demo . Report Bug . Request Feature
 
 Table of Contents
 
-- [# Best-README-Template](#-best-readme-template)
+- [Best-README-Template](#best-readme-template)
   - [About The Project](#about-the-project)
     - [Built With](#built-with)
   - [Getting Started](#getting-started)
@@ -97,19 +97,19 @@ For more examples, please refer to the Documentation
 Roadmap
 -------
 
- - [x]Add Changelog
+- [x]Add Changelog
 
- - [x]Add back to top links
+- [x]Add back to top links
 
- - [ ]Add Additional Templates w/ Examples
+- [ ]Add Additional Templates w/ Examples
 
- - [ ]Add "components" document to easily copy & paste sections of the readme
+- [ ]Add "components" document to easily copy & paste sections of the readme
 
- - [ ]Multi-language Support
+- [ ]Multi-language Support
 
- *   - [ ]Chinese
+- [ ]Chinese
 
- *   - [ ]Spanish
+- [ ]Spanish
 
 See the open issues for a full list of proposed features (and known issues).
 
