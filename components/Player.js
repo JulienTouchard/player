@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { Component } from 'react';
-import { View, Image, StyleSheet, Text, Animated } from 'react-native';
+import { View, StyleSheet, Text, Animated } from 'react-native';
 import { playlist } from '../playlist';
 import NavBtn from './NavBtn';
 import Sound from 'react-native-sound';
@@ -18,9 +18,11 @@ class Player extends Component {
         playlist: playlist,
         playPause: false,
         gestureName: 'none',
-        tranxAnim: new Animated.Value(0),
+        tranxAnim: new Animated.Value(1),
+        timeManager: '00:00',
+        totalTime: '00:00',
     }
-
+    // pour gérér l'arret de mon setInterval
     mp3 = this.initSound();
     initSound(index = this.state.currentTrack) {
         console.log("index : " + index);
@@ -31,6 +33,7 @@ class Player extends Component {
             }
             // loaded successfully
             console.log('duration in seconds: ' + sound.getDuration() + 'number of channels: ' + sound.getNumberOfChannels());
+            this.setState({totalTime:this.fancyTimeFormat(sound.getDuration())});
         });
         return sound;
     }
@@ -42,6 +45,7 @@ class Player extends Component {
             this.mp3.play((success) => {
                 if (success) {
                     console.log('successfully finished playing');
+                    this.mp3.setCurrentTime(0);
                 } else {
                     console.log('playback failed due to audio decoding errors');
                 }
@@ -50,6 +54,7 @@ class Player extends Component {
             // Pause
             this.mp3.pause();
         }
+        this.time();
     }
     prev() {
         console.log("prev");
@@ -62,20 +67,22 @@ class Player extends Component {
         } else {
             index = this.state.currentTrack - 1;
         }
-        this.setState({ currentTrack: index });
+        this.transOut(index);
         this.mp3 = this.initSound(index);
         setTimeout(() => {
             this.mp3.play((success) => {
                 if (success) {
                     console.log('successfully finished playing');
+                    this.mp3.setCurrentTime(0);
                 } else {
                     console.log('playback failed due to audio decoding errors');
                 }
             });
         }, 100);
+        this.time();
     }
     next() {
-        this.transOut();
+
         console.log("next");
         this.setState({ playPause: true });
         this.mp3.stop();
@@ -86,18 +93,20 @@ class Player extends Component {
         } else {
             index = this.state.currentTrack + 1;
         }
-        this.setState({ currentTrack: index });
+        this.transOut(index);
+
         this.mp3 = this.initSound(index);
         setTimeout(() => {
             this.mp3.play((success) => {
                 if (success) {
                     console.log('successfully finished playing');
+                    this.mp3.setCurrentTime(0);
                 } else {
                     console.log('playback failed due to audio decoding errors');
                 }
             });
         }, 100);
-
+        this.time();
     }
     // gestion swipe
     onSwipeLeft(gestureState) {
@@ -114,16 +123,63 @@ class Player extends Component {
         const { SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
         this.setState({ gestureName: gestureName });
     }
-    transOut = () => {
-        // Will change fadeAnim value to 1 in 5 seconds
+    transOut(index) {
+        // Will change  value to 1 in 5 seconds
         Animated.timing(this.state.tranxAnim, {
-            toValue: 500,
-            duration: 500
-        }).start();
-    };
+            toValue: 0,
+            duration: 300,
+        }).start(
+            () => {
+                this.setState({ currentTrack: index });
+                this.transIn();
+            }
+        );
+    }
+    transIn() {
+        Animated.timing(this.state.tranxAnim, {
+            toValue: 1,
+            duration: 300,
+        }).start(
+            () => {
+                console.log('animation out et in terminée');
+            }
+        );
+    }
+    // gestion du temps
+    fancyTimeFormat(duration) {
+        // Hours, minutes and seconds
+        let hrs = ~~(duration / 3600);
+        let mins = ~~((duration % 3600) / 60);
+        let secs = ~~duration % 60;
+
+        // Output like "1:01" or "4:03:59" or "123:03:59"
+        let ret = "";
+
+        if (hrs > 0) {
+            ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+        }
+
+        ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+        ret += "" + secs;
+        return ret;
+    }
+    
+    time(){
+        setInterval(
+            ()=>{
+                this.mp3.getCurrentTime(
+                    (seconds)=>{
+                        console.log(seconds);
+                        this.setState({timeManager:this.fancyTimeFormat(seconds)});
+                    }
+                )
+            },
+            1000
+        );
+    }
     render() {
         return (
-            <View style={{ width: '100%' }}>
+            <View style={{ width: '100%', backgroundColor: 'black', }}>
                 <GestureRecognizer
                     onSwipe={(direction, state) => this.onSwipe(direction, state)}
                     onSwipeLeft={(state) => this.onSwipeLeft(state)}
@@ -134,9 +190,8 @@ class Player extends Component {
                         style={[
                             styles.slider,
                             {
-                                // Bind padding to animated value
-                                paddingLeft: this.state.tranxAnim
-                            }
+                                opacity: this.state.tranxAnim,
+                            },
                         ]}
                     />
                 </GestureRecognizer>
@@ -145,12 +200,15 @@ class Player extends Component {
                     <NavBtn action={() => { this.playMp3(); }} icone={this.state.playPause ? "/img/pause-solid.png" : "/img/play-circle-solid.png"} />
                     <NavBtn action={() => { this.next(); }} icone={'/img/step-forward-solid.png'} />
                 </View>
+                <View>
+                    <Text style={styles.infoTxt}>{this.state.timeManager} / {this.state.totalTime}</Text>
+                </View>
                 <View style={styles.info}>
-                    <Text>{this.state.playlist[this.state.currentTrack].artist}</Text>
-                    <Text>{this.state.playlist[this.state.currentTrack].title}</Text>
-                    <Text>{this.state.playlist[this.state.currentTrack].annee}</Text>
-                    <Text>{this.state.playlist[this.state.currentTrack].genre}</Text>
-                    <Text>{this.state.playlist[this.state.currentTrack].description}</Text>
+                    <Text style={styles.infoTxt}>{this.state.playlist[this.state.currentTrack].artist}</Text>
+                    <Text style={styles.infoTxt}>{this.state.playlist[this.state.currentTrack].title}</Text>
+                    <Text style={styles.infoTxt}>{this.state.playlist[this.state.currentTrack].annee}</Text>
+                    <Text style={styles.infoTxt}>{this.state.playlist[this.state.currentTrack].genre}</Text>
+                    <Text style={styles.infoTxt}>{this.state.playlist[this.state.currentTrack].description}</Text>
                 </View>
             </View>
         );
@@ -164,7 +222,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         marginTop: 10,
         marginBottom: 5,
-
     },
     slider: {
         width: '100%',
@@ -174,6 +231,12 @@ const styles = StyleSheet.create({
     info: {
         width: '100%',
         margin: 5,
-    }
+        marginBottom:10,
+    },
+    infoTxt: {
+        color: '#ffffff',
+        textAlign:'center',
+        fontSize:20,
+    },
 });
 export default Player;

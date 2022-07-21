@@ -18,7 +18,9 @@ const styles = StyleSheet.create({
     imgIcone: {
         width: 60,
         height: 60,
-    }
+        borderColor:'black',
+        borderRadius:5,
+    },
 })
 
 export default NavBtn;
