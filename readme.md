@@ -1,4 +1,4 @@
-a, a:visited{ text-decoration: none; color: #6685b4; } a:hover{ color: #0243a5; } h1{ text-align: center; } #logo{ text-align: center; } .captImg{ width: 50%; margin: 2rem auto; } .captImg img{ width: 100%; } section, header{ padding: 1rem 2rem; } .code{ background-color: #616161; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; border-radius: .5rem; padding: .1rem .5rem; } .codeWide{ background-color: #616161; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; border-radius: .5rem; padding: .1rem 1rem; margin-top: .5rem; width: 100%; } .back{ width: 100%; text-align: right; } .subCheck{ margin-left: 1.5rem; } .myHr{ height: .02rem; background-color: #616161; }
+
 
 ![](./assets/img/logo.png)
 
@@ -13,17 +13,18 @@ View Demo . Report Bug . Request Feature
 
 Table of Contents
 
-1.  [About The Project](#about)
-    *   [Built With](#built)
-2.  [Getting Started](#started)
-    *   [Prerequisites](#rerequisites)
-    *   [Installation](#installation)
-3.  [Usage](#usage)
-4.  [Roadmap](#roadmap)
-5.  [Contributing](#contributing)
-6.  [License](#licence)
-7.  [Contact](#contact)
-8.  [Acknowledgments](#acknowlege)
+- [Best-README-Template](#best-readme-template)
+  - [About The Project](#about-the-project)
+    - [Built With](#built-with)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+  - [Usage](#usage)
+  - [Roadmap](#roadmap)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [Contact](#contact)
+  - [Acknowledgments](#acknowledgments)
 
 About The Project
 -----------------
@@ -40,7 +41,7 @@ Here's why:
 
 Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
 
-Use the BLANK\_README.md to get started.
+Use the ```BLANK\_README.md``` to get started.
 
 [(back to top)](#project)
 
