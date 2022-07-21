@@ -97,19 +97,19 @@ For more examples, please refer to the Documentation
 Roadmap
 -------
 
-- [x]Add Changelog
+- [x] Add Changelog
 
-- [x]Add back to top links
+- [x] Add back to top links
 
-- [ ]Add Additional Templates w/ Examples
+- [ ] Add Additional Templates w/ Examples
 
-- [ ]Add "components" document to easily copy & paste sections of the readme
+- [ ] Add "components" document to easily copy & paste sections of the readme
 
-- [ ]Multi-language Support
+- [ ] Multi-language Support
 
-- [ ]Chinese
+- [ ] Chinese
 
-- [ ]Spanish
+- [ ] Spanish
 
 See the open issues for a full list of proposed features (and known issues).
 
